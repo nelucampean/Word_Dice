@@ -1,0 +1,37 @@
+package ro.pontes.nelucampean.worddice
+
+import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceFragmentCompat
+
+class SettingsActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.settings_activity)
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.settings, SettingsFragment())
+                .commit()
+        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    class SettingsFragment : PreferenceFragmentCompat() {
+        lateinit var tts :TextToSpeech
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.root_preferences, rootKey)
+            tts = TextToSpeech(context) {
+                tts.engines.forEach {
+                    Log.d("voice", it.label+" - "+it.name)
+                }
+            }
+
+
+        }
+    }
+}
